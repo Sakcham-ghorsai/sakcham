@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f2747">
+  <meta name="description" id="meta-description" content="Under Graduate Aerospace Engineering showcasing engineering projects, technical skills, education, and professional development.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" id="meta-author" content="Sakcham Ghorsai">
+  <!-- Open Graph / social preview -->
+  <meta property="og:type" content="profile">
+  <meta property="og:title" id="og-title" content="Sakcham Ghorsai">
+  <meta property="og:description" id="og-description" content="Under Graduate Aerospace Engineering portfolio showcasing engineering projects, technical skills, education, certifications, and professional development.">
+  <meta property="og:image" id="og-image" content="">
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" id="twitter-title" content="Sakcham Ghorsai">
+  <meta name="twitter:description" id="twitter-description" content="Under Graduate Aerospace Engineering portfolio showcasing engineering projects, technical skills, education, certifications, and professional development.">
+  <link rel="canonical" href="https://sakchamghorsai.com.np/">
+  <title id="page-title">Sakcham Ghorsai</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body id="public-site">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Navigation Bar -->
+  <header>
+    <h2 class="brand-mark">Sakcham Ghorsai</h2>
+    <div class="nav-wrap">
+      <nav id="nav-menu">
+        <a href="#hero">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#certificates">Certificates</a>
+        <a href="#skills">Technical Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <!-- Mobile Hamburger Toggle -->
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero">
+    <div class="hero-inner">
+      <img id="profile-img" class="profile-photo" alt="Sakcham Ghorsai">
+      <div class="hero-text">
+        <h1 id="hero-title">Sakcham Ghorsai</h1>
+        <div class="hero-subline">
+          <p id="hero-subtitle">Under-Graduate Aerospace Engineer</p>
+          <a id="cv-download-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:none;">Download CV</a>
+        </div>
+        <p id="about-text" class="about-text hero-intro">I am a Under-Graduate Aerospace Engineer with a practical and problem-solving approach to engineering design, technical work, and continuous learning. This portfolio brings together selected engineering projects, education, certifications, and technical skills.</p>
+      </div>
+    </div>
+  </section>
+
+  <main class="container" id="main-content" tabindex="-1">
+    <!-- Projects Section -->
+    <section id="projects" class="section-box">
+      <h2>Selected Projects</h2>
+      <div id="projects-container" class="grid"></div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section-box">
+      <h2>Education</h2>
+      <div id="education-container" class="grid"></div>
+    </section>
+
+    <!-- Certificates Section -->
+    <section id="certificates" class="section-box">
+      <h2>Certificates</h2>
+      <div id="certificates-container" class="cert-grid"></div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section-box">
+      <h2>Design Skills</h2>
+      <div id="skills-container" class="skills-wrapper"></div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-box">
+      <h2>Contact</h2>
+      <div class="contact-grid">
+        <div class="contact-card-info">
+          <p><strong>Email</strong> <span id="contact-email-val">Loading...</span></p>
+          <p><strong>Phone</strong> <span id="contact-phone-val">Loading...</span></p>
+          <div id="social-links" class="social-links"></div>
+        </div>
+
+        <form id="contact-form">
+          <div class="form-group">
+            <label for="c-name">Your Name</label>
+            <input type="text" id="c-name" required placeholder="Your name" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="c-email">Your Email</label>
+            <input type="email" id="c-email" required placeholder="you@example.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="c-message">Message</label>
+            <textarea id="c-message" rows="4" required placeholder="Tell me about an opportunity, project, or collaboration..."></textarea>
+          </div>
+          <!-- Honeypot field: hidden from real users, bots tend to fill every field -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="c-website">Website</label>
+            <input type="text" id="c-website" tabindex="-1" autocomplete="off">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+          <div id="contact-status" role="status" aria-live="polite" style="margin-top:12px; font-weight:600; font-size:0.9rem;"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>Sakcham Ghorsai</footer>
+
+  <button type="button" id="back-to-top" class="back-to-top" aria-label="Back to top">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

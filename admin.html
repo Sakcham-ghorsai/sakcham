@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Admin Panel</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+</head>
+<body id="admin-site">
+
+  <!-- AUTH SECTION (Login Form) -->
+  <div id="auth-section" class="auth-box">
+    <h2 style="margin-bottom: 20px; text-align: center;">Admin Login</h2>
+    <form id="login-form">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+    </form>
+    <div style="text-align: center; margin-top: 15px;">
+      <a href="index.html" style="color: #666; text-decoration: none;">&larr; Back to Site</a>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SECTION -->
+  <div id="dashboard-section" style="display: none;">
+    <header>
+      <h2>Admin Dashboard</h2>
+      <nav>
+        <a href="index.html" target="_blank">View Site</a>
+        <a id="admin-cv-link" class="btn btn-primary admin-cv-link" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">CV / Resume</a>
+        <button id="install-app-btn" class="btn btn-primary" style="display:none;">Install App</button>
+        <button id="logout-btn" class="btn btn-danger">Logout</button>
+      </nav>
+    </header>
+
+    <div class="container">
+      <section class="admin-cv-top" aria-label="CV / Resume upload">
+        <div class="admin-cv-top-head">
+          <div>
+            <span class="admin-section-kicker">QUICK ACTION</span>
+            <h3>CV / Resume</h3>
+            <p>Upload or replace your CV directly from here.</p>
+          </div>
+          <a id="admin-cv-link-top" class="btn btn-secondary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">View Current CV</a>
+        </div>
+        <form id="cv-form" class="admin-cv-form">
+          <div class="form-group"><input type="file" id="cv-file" accept=".pdf,application/pdf"></div>
+          <button type="submit" class="btn btn-primary">Upload CV / Resume</button>
+        </form>
+        <div id="cv-status" style="margin-top: 10px;"></div>
+      </section>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'settings-tab')">Settings & Photo</button>
+        <button class="tab-btn" onclick="openTab(event, 'projects-tab')">Projects</button>
+        <button class="tab-btn" onclick="openTab(event, 'edu-tab')">Education</button>
+        <button class="tab-btn" onclick="openTab(event, 'certs-tab')">Certificates</button>
+        <button class="tab-btn" onclick="openTab(event, 'skills-tab')">Skills</button>
+        <button class="tab-btn" onclick="openTab(event, 'social-tab')">Social & Contact</button>
+        <button class="tab-btn" onclick="openTab(event, 'messages-tab')">Messages</button>
+      </div>
+
+      <!-- Settings Tab -->
+      <div id="settings-tab" class="tab-content active">
+        <h3>Profile Photo</h3>
+        <form id="photo-form" style="margin-bottom: 20px;">
+          <div class="form-group"><input type="file" id="photo-file" accept="image/*"></div>
+          <button type="submit" class="btn btn-primary">Upload / Change Photo</button>
+          <button type="button" class="btn btn-danger" id="remove-photo-btn">Remove Photo</button>
+          <div id="photo-preview-container"></div>
+        </form>
+
+        <hr style="margin: 20px 0;">
+
+        <h3>General Info</h3>
+        <form id="settings-form" style="margin-bottom: 20px;">
+          <div class="form-group">
+            <label>Hero Title</label>
+            <input type="text" id="adm-hero-title">
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-hero-title-size">Font Size</label>
+                <span class="type-size-val" id="adm-hero-title-size-val">42px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-hero-title-size" min="24" max="80" value="42">
+              <label for="adm-hero-title-font">Font</label>
+              <select class="font-select" id="adm-hero-title-font"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Hero Subtitle</label>
+            <input type="text" id="adm-hero-subtitle">
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-hero-subtitle-size">Font Size</label>
+                <span class="type-size-val" id="adm-hero-subtitle-size-val">21px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-hero-subtitle-size" min="14" max="40" value="21">
+              <label for="adm-hero-subtitle-font">Font</label>
+              <select class="font-select" id="adm-hero-subtitle-font"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>About Text</label>
+            <textarea id="adm-about-text" rows="3"></textarea>
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-about-text-size">Font Size</label>
+                <span class="type-size-val" id="adm-about-text-size-val">17px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-about-text-size" min="14" max="32" value="17">
+              <label for="adm-about-text-font">Font</label>
+              <select class="font-select" id="adm-about-text-font"></select>
+            </div>
+          </div>
+          <div class="form-group"><label>Contact Email</label><input type="email" id="adm-email"></div>
+          <div class="form-group"><label>Contact Phone</label><input type="text" id="adm-phone"></div>
+
+          <hr style="margin: 20px 0;">
+
+          <h3>Typography — Section Headings &amp; Body Text</h3>
+          <p style="color:#64748b; font-size:0.85rem; margin-bottom:12px;">These control every section heading (About, Projects, Education, Skills, Contact) and the smaller body text across project/education cards and contact info, site-wide.</p>
+          <div class="form-group">
+            <label>Section Headings</label>
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-heading-size">Font Size</label>
+                <span class="type-size-val" id="adm-heading-size-val">29px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-heading-size" min="18" max="48" value="29">
+              <label for="adm-heading-font">Font</label>
+              <select class="font-select" id="adm-heading-font"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Body Text</label>
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-body-size">Font Size</label>
+                <span class="type-size-val" id="adm-body-size-val">15px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-body-size" min="12" max="24" value="15">
+              <label for="adm-body-font">Font</label>
+              <select class="font-select" id="adm-body-font"></select>
+            </div>
+          </div>
+
+          <hr style="margin: 20px 0;">
+
+          <h3>Typography — By Section</h3>
+          <p style="color:#64748b; font-size:0.85rem; margin-bottom:12px;">Fine-tune each section individually. These override the Body Text default above wherever they're set.</p>
+          <div class="form-group">
+            <label>Projects (titles &amp; descriptions)</label>
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-projects-size">Font Size</label>
+                <span class="type-size-val" id="adm-projects-size-val">15px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-projects-size" min="12" max="26" value="15">
+              <label for="adm-projects-font">Font</label>
+              <select class="font-select" id="adm-projects-font"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Education (institution, degree, syllabus)</label>
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-education-size">Font Size</label>
+                <span class="type-size-val" id="adm-education-size-val">15px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-education-size" min="12" max="26" value="15">
+              <label for="adm-education-font">Font</label>
+              <select class="font-select" id="adm-education-font"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Skills (badges)</label>
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-skills-size">Font Size</label>
+                <span class="type-size-val" id="adm-skills-size-val">14px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-skills-size" min="10" max="24" value="14">
+              <label for="adm-skills-font">Font</label>
+              <select class="font-select" id="adm-skills-font"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Social Buttons (LinkedIn, Facebook, WhatsApp, Other)</label>
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-social-size">Font Size</label>
+                <span class="type-size-val" id="adm-social-size-val">14px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-social-size" min="10" max="24" value="14">
+              <label for="adm-social-font">Font</label>
+              <select class="font-select" id="adm-social-font"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Contact Info (email &amp; phone display)</label>
+            <div class="type-control">
+              <div class="type-control-row">
+                <label for="adm-contact-size">Font Size</label>
+                <span class="type-size-val" id="adm-contact-size-val">15px</span>
+              </div>
+              <input type="range" class="font-slider" id="adm-contact-size" min="12" max="26" value="15">
+              <label for="adm-contact-font">Font</label>
+              <select class="font-select" id="adm-contact-font"></select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save Settings</button>
+        </form>
+
+      </div>
+
+      <!-- Projects Tab -->
+      <div id="projects-tab" class="tab-content">
+        <h3 id="project-form-heading">Add Project</h3>
+        <form id="project-form" style="margin-bottom: 20px;">
+          <input type="hidden" id="p-edit-id" value="">
+          <input type="hidden" id="p-existing-report" value="">
+          <input type="hidden" id="p-existing-media" value="">
+          <div class="form-group"><label>Title</label><input type="text" id="p-title" required></div>
+          <div class="form-group"><label>Description</label><textarea id="p-desc"></textarea></div>
+          <div class="form-group">
+            <label>Project Clip (MP4, WebM, or GIF)</label>
+            <input type="file" id="p-media-file" accept=".mp4,.webm,.mov,.gif">
+            <div id="p-media-status" style="margin-top:8px;"></div>
+            <button type="button" class="btn btn-danger" id="p-remove-media-btn" style="display:none; margin-top:10px;">Remove Clip</button>
+          </div>
+          <div class="form-group">
+            <label>Project Report (PDF)</label>
+            <input type="file" id="p-report-file" accept=".pdf">
+            <div id="p-report-status" style="margin-top:8px;"></div>
+            <button type="button" class="btn btn-danger" id="p-remove-report-btn" style="display:none; margin-top:10px;">Remove Report</button>
+          </div>
+          <button type="submit" class="btn btn-primary" id="project-submit-btn">Add Project</button>
+          <button type="button" class="btn btn-secondary" id="project-cancel-btn" style="display:none;">Cancel</button>
+        </form>
+        <h3>Existing Projects</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin:-6px 0 10px;">Drag the ⠿ handle to reorder.</p>
+        <div id="admin-projects-list"></div>
+      </div>
+
+      <!-- Education Tab -->
+      <div id="edu-tab" class="tab-content">
+        <h3 id="edu-form-heading">Add Education</h3>
+        <form id="edu-form" style="margin-bottom: 20px;">
+          <input type="hidden" id="edu-edit-id" value="">
+          <input type="hidden" id="edu-existing-syllabus" value="">
+          <input type="hidden" id="edu-existing-media" value="">
+          <div class="form-group"><label>Institution</label><input type="text" id="edu-inst" required></div>
+          <div class="form-group"><label>Degree</label><input type="text" id="edu-deg" required></div>
+          <div class="form-group"><label>Year Range</label><input type="text" id="edu-yr"></div>
+          <div class="form-group">
+            <label>Education Clip (MP4, WebM, or GIF)</label>
+            <input type="file" id="edu-media-file" accept=".mp4,.webm,.mov,.gif">
+            <div id="edu-media-status" style="margin-top:8px;"></div>
+            <button type="button" class="btn btn-danger" id="edu-remove-media-btn" style="display:none; margin-top:10px;">Remove Clip</button>
+          </div>
+          <div class="form-group">
+            <label>Syllabus Covered (PDF)</label>
+            <input type="file" id="edu-syllabus-file" accept=".pdf">
+            <div id="edu-syllabus-status" style="margin-top:8px;"></div>
+            <button type="button" class="btn btn-danger" id="edu-remove-syllabus-btn" style="display:none; margin-top:10px;">Remove Syllabus</button>
+          </div>
+          <button type="submit" class="btn btn-primary" id="edu-submit-btn">Add Education</button>
+          <button type="button" class="btn btn-secondary" id="edu-cancel-btn" style="display:none;">Cancel</button>
+        </form>
+        <h3>Existing Education</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin:-6px 0 10px;">Drag the ⠿ handle to reorder.</p>
+        <div id="admin-edu-list"></div>
+      </div>
+
+      <!-- Certificates Tab -->
+      <div id="certs-tab" class="tab-content">
+        <h3 id="cert-form-heading">Add Certificate</h3>
+        <form id="cert-form" style="margin-bottom: 20px;">
+          <input type="hidden" id="cert-edit-id" value="">
+          <input type="hidden" id="cert-existing-image" value="">
+          <div class="form-group"><label>Certificate Title</label><input type="text" id="cert-title" required placeholder="e.g. AWS Certified Cloud Practitioner"></div>
+          <div class="form-group"><label>Issuing Organization</label><input type="text" id="cert-issuer" required placeholder="e.g. Amazon Web Services"></div>
+          <div class="form-group"><label>Issue Date</label><input type="text" id="cert-date" placeholder="e.g. May 2024"></div>
+          <div class="form-group"><label>Credential ID (optional)</label><input type="text" id="cert-cred-id" placeholder="e.g. ABC-123456"></div>
+          <div class="form-group"><label>Credential / Verify URL (optional)</label><input type="url" id="cert-cred-url" placeholder="https://..."></div>
+          <div class="form-group">
+            <label>Certificate Image (JPG, PNG, or PDF)</label>
+            <input type="file" id="cert-image-file" accept=".jpg,.jpeg,.png,.pdf">
+            <div id="cert-image-status" style="margin-top:8px;"></div>
+            <button type="button" class="btn btn-danger" id="cert-remove-image-btn" style="display:none; margin-top:10px;">Remove Image</button>
+          </div>
+          <button type="submit" class="btn btn-primary" id="cert-submit-btn">Add Certificate</button>
+          <button type="button" class="btn btn-secondary" id="cert-cancel-btn" style="display:none;">Cancel</button>
+        </form>
+        <h3>Existing Certificates</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin:-6px 0 10px;">Drag the ⠿ handle to reorder.</p>
+        <div id="admin-cert-list"></div>
+      </div>
+
+      <!-- Skills Tab -->
+      <div id="skills-tab" class="tab-content">
+        <h3 id="skill-form-heading">Add Skill</h3>
+        <form id="skill-form" style="margin-bottom: 20px;">
+          <input type="hidden" id="s-edit-id" value="">
+          <div class="form-group"><label>Category</label><input type="text" id="s-cat" placeholder="Frontend, Database, etc."></div>
+          <div class="form-group"><label>Skill Name</label><input type="text" id="s-name" required></div>
+          <div class="form-group">
+            <label>Level of Knowledge</label>
+            <select id="s-level">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate" selected>Intermediate</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Expert">Expert</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" id="skill-submit-btn">Add Skill</button>
+          <button type="button" class="btn btn-secondary" id="skill-cancel-btn" style="display:none;">Cancel</button>
+        </form>
+        <h3>Existing Skills</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin:-6px 0 10px;">Drag the ⠿ handle to reorder.</p>
+        <div id="admin-skills-list"></div>
+      </div>
+
+      <!-- Social & Contact Tab -->
+      <div id="social-tab" class="tab-content">
+        <h3>Social & Contact Links</h3>
+        <p style="color:#64748b; font-size:0.9rem; margin-bottom:16px;">These appear as buttons on your Contact section, in addition to your email and phone.</p>
+        <form id="social-form">
+          <div class="form-group"><label>LinkedIn URL</label><input type="url" id="adm-linkedin" placeholder="https://linkedin.com/in/yourname"></div>
+          <div class="form-group"><label>Facebook URL</label><input type="url" id="adm-facebook" placeholder="https://facebook.com/yourname"></div>
+          <div class="form-group"><label>WhatsApp Number</label><input type="text" id="adm-whatsapp" placeholder="Country code + number, e.g. 15551234567"></div>
+          <hr style="margin: 20px 0;">
+          <div class="form-group"><label>Additional Contact Button Label</label><input type="text" id="adm-other-label" placeholder="e.g. Telegram, Book a Call"></div>
+          <div class="form-group"><label>Additional Contact Button URL</label><input type="url" id="adm-other-url" placeholder="https://..."></div>
+          <button type="submit" class="btn btn-primary">Save Social Links</button>
+        </form>
+      </div>
+
+      <!-- Messages Tab -->
+      <div id="messages-tab" class="tab-content">
+        <h3>Contact Submissions</h3>
+        <div id="admin-messages-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Optional install support is intentionally omitted; admin works without a PWA service worker.
+  </script>
+</body>
+</html>
